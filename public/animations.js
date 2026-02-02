@@ -258,6 +258,36 @@ const chatbotInput = document.getElementById('chatbotInput');
 const chatbotSend = document.getElementById('chatbotSend');
 const chatbotMessages = document.getElementById('chatbotMessages');
 
+// Profanity Control State
+let swearCount = 0;
+let suppressReplies = false;
+
+// Initialize on page load - clear mute state
+localStorage.removeItem('chatMuted');
+
+// Profanity word list (expandable)
+const profanityList = [
+    'fuck', 'shit', 'ass', 'bitch', 'damn', 'hell', 'bastard', 'crap',
+    'dick', 'piss', 'cock', 'slut', 'whore', 'fag', 'retard', 'idiot',
+    'stupid', 'dumb', 'moron', 'asshole', 'motherfucker', 'fucker'
+];
+
+// Function to detect profanity
+function containsProfanity(text) {
+    const lowerText = text.toLowerCase();
+    return profanityList.some(word => {
+        const regex = new RegExp(`\\b${word}\\b`, 'i');
+        return regex.test(lowerText);
+    });
+}
+
+// De-escalation messages
+const deEscalationMessages = [
+    "I understand you may be frustrated. Let's keep our conversation respectful so I can better assist you.",
+    "I'm here to help. Let's maintain a professional tone so we can work together effectively.",
+    "I appreciate your patience. Please let me know how I can assist you in a constructive way."
+];
+
 // Quick questions
 const quickQuestions = [
     "What services do you offer?",
@@ -289,6 +319,30 @@ function addMessage(text, isUser = false) {
 
 // Function to get bot response
 function getBotResponse(userMessage) {
+    // Check if chat is muted
+    if (suppressReplies || localStorage.getItem('chatMuted') === 'true') {
+        return null; // No response
+    }
+
+    // Check for profanity
+    if (containsProfanity(userMessage)) {
+        swearCount++;
+        
+        // Progressive enforcement
+        if (swearCount >= 3) {
+            suppressReplies = true;
+            localStorage.setItem('chatMuted', 'true');
+            return null; // Stop responding
+        } else if (swearCount === 2) {
+            // Shorter, focused de-escalation
+            return "Please use respectful language.";
+        } else {
+            // First violation - calm de-escalation
+            return deEscalationMessages[Math.floor(Math.random() * deEscalationMessages.length)];
+        }
+    }
+    
+    // Normal response logic
     const message = userMessage.toLowerCase();
     
     if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
@@ -328,13 +382,22 @@ chatbotClose?.addEventListener('click', () => {
 function sendMessage() {
     const message = chatbotInput.value.trim();
     if (message) {
+        // Don't process if already muted
+        if (suppressReplies || localStorage.getItem('chatMuted') === 'true') {
+            chatbotInput.value = '';
+            return;
+        }
+
         addMessage(message, true);
         chatbotInput.value = '';
         
         // Simulate typing delay
         setTimeout(() => {
             const response = getBotResponse(message);
-            addMessage(response, false);
+            if (response) {
+                addMessage(response, false);
+            }
+            // If response is null, chatbot stays silent (muted)
         }, 600);
     }
 }

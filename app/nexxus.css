@@ -567,7 +567,10 @@
             min-height: 80vh;
             position: relative;
         }
-
+        .about.container {
+display: flex;
+align-items: center;
+        }
         .about::before {
             content: '';
             position: absolute;
@@ -2155,6 +2158,12 @@ footer {
     background: linear-gradient(180deg, #0a0a0a 0%, #000000 100%);
     position: relative;
     overflow: hidden;
+    text-align: center;
+}
+
+.about-section .container {
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 .contact-section {
@@ -2228,13 +2237,25 @@ footer {
     gap: 40px;
     max-width: 1200px;
     margin: 40px auto;
-    align-items: center;
+    align-items: start;
+    justify-items: center;
+}
+
+.contact-form-container,
+.calendly-widget-container {
+    width: 100%;
+    max-width: 600px;
 }
 
 @media (max-width: 968px) {
     .about-content-wrapper {
         grid-template-columns: 1fr;
         gap: 30px;
+    }
+    
+    .contact-form-container,
+    .calendly-widget-container {
+        max-width: 100%;
     }
 }
 
