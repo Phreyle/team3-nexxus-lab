@@ -402,6 +402,48 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Automation Video Section */}
+      <section className="automation-demo" id="automation">
+        <div className="particles" id="automation-particles"></div>
+        <h2 className="section-title">Sample of Basic Automation</h2>
+        <p className="section-subtitle">See how we streamline workflows and save time</p>
+        
+        <div className="automation-video-container">
+          <div className="automation-video-wrapper">
+            <div className="scan-line-overlay">
+              <div className="scan-line"></div>
+            </div>
+            <div className="video-aspect-container">
+              <video 
+                id="automation-video"
+                className="automation-video hidden"
+                controls
+              >
+                <source src="/SimpleAutomation.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <div id="video-thumbnail" className="video-thumbnail-container">
+                <div className="thumbnail-overlay"></div>
+                <button className="play-button-overlay" id="play-button">
+                  <div className="play-button-wrapper">
+                    <div className="play-button-pulse"></div>
+                    <div className="play-button-circle">
+                      <svg className="play-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                </button>
+                <p className="play-demo-text">Click to play demo</p>
+              </div>
+            </div>
+          </div>
+          <div className="automation-description">
+            <p>This demo showcases a basic automation workflow that eliminates repetitive tasks, reduces human error, and works around the clock. Imagine what custom automation can do for your business.</p>
+          </div>
+        </div>
+      </section>
+
       {/* About Section */}
       <section id="about" className="about-section">
         <div className="particles" id="about-particles"></div>

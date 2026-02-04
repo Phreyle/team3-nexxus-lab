@@ -53,8 +53,28 @@ createParticles('mission-particles'); // Mission
 createParticles('team-particles'); // Team
 createParticles('portfolio-particles'); // Portfolio
 createParticles('principles-particles'); // Principles
+createParticles('automation-particles'); // Automation
 createParticles('about-particles'); // About
 createParticles('contact-particles'); // Contact
+
+// Video Player Handler
+const playButton = document.getElementById('play-button');
+const videoElement = document.getElementById('automation-video');
+const videoThumbnail = document.getElementById('video-thumbnail');
+
+if (playButton && videoElement && videoThumbnail) {
+    playButton.addEventListener('click', () => {
+        videoThumbnail.style.display = 'none';
+        videoElement.classList.remove('hidden');
+        videoElement.play();
+    });
+    
+    // Optional: Show thumbnail again when video ends
+    videoElement.addEventListener('ended', () => {
+        videoElement.classList.add('hidden');
+        videoThumbnail.style.display = 'block';
+    });
+}
 
 // Intersection Observer for scroll animations with stagger
 const observerOptions = {
